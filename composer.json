@@ -1,0 +1,23 @@
+{
+  "name": "bapcat/nom",
+  "description": "A templating language fit for cats",
+  "license": "GPLv3",
+  "homepage": "http://github.com/BapCat/Nom",
+  "keywords": [],
+  "authors": [
+    {
+      "name": "Corey Frenette",
+      "email": "corey@narwhunderful.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "bapcat/values": "^0.1.1",
+    "icanboogie/inflector": "^1.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "BapCat\\Nom\\": "src/"
+    }
+  }
+}
