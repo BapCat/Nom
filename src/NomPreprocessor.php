@@ -2,7 +2,7 @@
 
 use BapCat\Values\Regex;
 
-class NomPreprocessor {
+class NomPreprocessor implements Preprocessor {
   private $replacements;
   
   public function __construct() {
