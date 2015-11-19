@@ -13,7 +13,8 @@
   "require": {
     "php": ">=5.5.0",
     "bapcat/values": "^0.1.1",
-    "icanboogie/inflector": "^1.4"
+    "icanboogie/inflector": "^1.4",
+    "bapcat/persist": "^0.1.0"
   },
   "autoload": {
     "psr-4": {
