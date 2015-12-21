@@ -28,7 +28,12 @@ class Compiler {
     extract($_bap_data);
     
     try {
-      include $_bap_path->full_path;
+      if(PHP_VERSION_ID >= 70000) {
+        include $_bap_path->full_path;
+      } else {
+        //GOTCHA: It's impossible to trap syntax errors before PHP7... we're forced to just swallow them
+        @include $_bap_path->full_path;
+      }
     } catch(Exception $e) {
       $this->handleViewException($_bap_path, $e, $_bap_level);
     } catch(Throwable $e) {
