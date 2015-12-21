@@ -16,7 +16,6 @@ class NomPreprocessorTest extends PHPUnit_Framework_TestCase {
   }
   
   public function testProcessInflector() {
-  
     $inflectors = [
       'titleize',
       'camelize',
@@ -30,8 +29,7 @@ class NomPreprocessorTest extends PHPUnit_Framework_TestCase {
     
     $string = "bap off";
     
-    foreach ( $inflectors as $inflector ) {
-      
+    foreach($inflectors as $inflector) {
       $input  = "@{$inflector} ( \"$string\" )";
       $expected = "\ICanBoogie\Inflector::get()->{$inflector}(\"$string\")";
       $this->process($input, $expected);
@@ -77,7 +75,6 @@ class NomPreprocessorTest extends PHPUnit_Framework_TestCase {
   public function testForeach() {
     $input = '@each ( bap as $cat )';
     $expected = '<?php foreach(bap as $cat): ?>';
-    
     $this->process($input, $expected);
   }
   
@@ -86,6 +83,7 @@ class NomPreprocessorTest extends PHPUnit_Framework_TestCase {
     $expected = '<?php foreach(bap as $cat => $it): ?>';
     $this->process($input, $expected);
   }
+  
   public function testEndForeach() {
     $input = '@endeach';
     $expected = '<?php endforeach; ?>';
