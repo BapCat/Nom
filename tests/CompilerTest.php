@@ -32,6 +32,11 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
   }
   
   public function testCompileSyntaxError() {
+    // Only run on PHP7
+    if(PHP_VERSION_ID < 70000) {
+      return;
+    }
+    
     $this->setExpectedException(TemplateCompilationException::class);
     
     $path = $this->fs->getFile('invalid.php');
@@ -40,6 +45,11 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
   }
   
   public function testCompileMistake() {
+    // Only run on PHP7
+    if(PHP_VERSION_ID < 70000) {
+      return;
+    }
+    
     $this->setExpectedException(TemplateCompilationException::class);
     
     $path = $this->fs->getFile('mistake.php');

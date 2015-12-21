@@ -28,28 +28,22 @@ class Compiler {
     extract($_bap_data);
     
     try {
-      if(PHP_VERSION_ID >= 70000) {
-        include $_bap_path->full_path;
-      } else {
-        //GOTCHA: It's impossible to trap syntax errors before PHP7... we're forced to just swallow them
-        @include $_bap_path->full_path;
-      }
+      include $_bap_path->full_path;
     } catch(Exception $e) {
-      $this->handleViewException($_bap_path, $e, $_bap_level);
+      $this->handleViewException($e, $_bap_level);
     } catch(Throwable $e) {
       // Handle PHP7 throwables
-      //@TODO probably don't want to use Exception
-      $this->handleViewException($_bap_path, new Exception($e), $_bap_level);
+      $this->handleViewException(new TemplateCompilationException($_bap_path, $e), $_bap_level);
     }
     
     return ltrim(ob_get_clean());
   }
   
-  private function handleViewException(LocalFile $file, Exception $e, $ob_level) {
+  private function handleViewException(Exception $e, $ob_level) {
     while(ob_get_level() > $ob_level) {
       ob_end_clean();
     }
     
-    throw new TemplateCompilationException($file, $e);
+    throw $e;
   }
 }
