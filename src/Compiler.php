@@ -18,32 +18,33 @@ class Compiler {
    * @return string
    */
   public function compile(LocalFile $_bap_path, array $_bap_data = []) {
+    if(!$_bap_path->exists) {
+      throw new TemplateNotFoundException($_bap_path);
+    }
+    
     $_bap_level = ob_get_level();
     ob_start();
     
     extract($_bap_data);
     
     try {
-      //GOTCHA: have to compare to `true`, can't use `not`
-      if((@include $_bap_path->full_path) != true) {
-        throw new TemplateNotFoundException($_bap_path);
-      }
+      include $_bap_path->full_path;
     } catch(Exception $e) {
-      $this->handleViewException($e, $_bap_level);
+      $this->handleViewException($_bap_path, $e, $_bap_level);
     } catch(Throwable $e) {
       // Handle PHP7 throwables
       //@TODO probably don't want to use Exception
-      $this->handleViewException(new Exception($e), $_bap_level);
+      $this->handleViewException($_bap_path, new Exception($e), $_bap_level);
     }
     
     return ltrim(ob_get_clean());
   }
   
-  private function handleViewException(Exception $e, $ob_level) {
+  private function handleViewException(LocalFile $file, Exception $e, $ob_level) {
     while(ob_get_level() > $ob_level) {
       ob_end_clean();
     }
     
-    throw $e;
+    throw new TemplateCompilationException($file, $e);
   }
 }
