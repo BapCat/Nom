@@ -2,7 +2,7 @@
 
 use BapCat\Values\Regex;
 
-class NomPreprocessor implements Preprocessor {
+class NomTransformer implements Transformer {
   private $replacements;
   
   public function __construct() {
@@ -44,7 +44,7 @@ class NomPreprocessor implements Preprocessor {
     ];
   }
   
-  public function process($code) {
+  public function transform($code) {
     foreach($this->replacements as $replacement) {
       $code = preg_replace($replacement[0]->raw, $replacement[1], $code);
     }
