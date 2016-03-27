@@ -2,9 +2,15 @@
 
 use BapCat\Values\Regex;
 
+/**
+ * Compiles Nom-style templates into standard PHP templates
+ */
 class NomTransformer implements Transformer {
   private $replacements;
   
+  /**
+   * Constructor
+   */
   public function __construct() {
     $this->replacements = [
       [
@@ -44,6 +50,9 @@ class NomTransformer implements Transformer {
     ];
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public function transform($code) {
     foreach($this->replacements as $replacement) {
       $code = preg_replace($replacement[0]->raw, $replacement[1], $code);

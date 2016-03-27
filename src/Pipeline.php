@@ -1,12 +1,11 @@
 <?php namespace BapCat\Nom;
 
 use BapCat\Persist\File;
-use BapCat\Persist\FileReader;
 use BapCat\Persist\Directory;
 
 /**
  * A pipeline for pre-processing, compiling, and post-processing templates
- * 
+ *
  * Please note that if pre-processing is used, a temporary file must
  * be created.  Applications requiring high performance should skip
  * this step unless caching is used.
@@ -34,7 +33,7 @@ class Pipeline {
   
   /**
    * Constructor
-   * 
+   *
    * @var  Directory           $cache           A temporary directory used during pre-processing
    * @var  Compiler            $compiler        The class being used to compile templates
    * @var  array<Transformer>  $preprocessors   (optional) An array of pre-processors to execute sequentially before compilation
@@ -49,38 +48,31 @@ class Pipeline {
   
   /**
    * Executes pre-processors, compiler, and post-processors on a template
-   * 
+   *
    * @param  File          $template       The template to send through the pipeline
    * @param  array<mixed>  $template_vars  A keyed array of variables to pass into the template.  All variables
    *                                       will be accessible in the template by their key (eg. `$array_key`)
-   * 
+   *
    * @return  string  The processed and compiled template
    */
   public function compile(File $template, array $template_vars = []) {
-    if(count($this->preprocessors) != 0) {
-      $code = null;
-      $template->read(function(FileReader $reader) use(&$code) {
-        $code = $reader->read();
-      });
-      
-      $processed_code = $code;
+    $template = $template->makeLocal();
+    
+    if(!empty($this->preprocessors)) {
+      $processed_code = $template->readAll();
       
       foreach($this->preprocessors as $preprocessor) {
         $processed_code = $preprocessor->process($processed_code);
       }
       
       $template = $this->cache->child[$template->name];
-      
-      //@TODO: use FileWriter when available
-      file_put_contents($template->full_path, $processed_code);
+      $template->writeAll($processed_code);
     }
     
-    $output = $this->compiler->compile($template->makeLocal(), $template_vars);
+    $output = $this->compiler->compile($template, $template_vars);
     
-    if(count($this->postprocessors) != 0) {
-      foreach($this->postprocessors as $postprocessor) {
-        $output = $postprocessor->process($output);
-      }
+    foreach($this->postprocessors as $postprocessor) {
+      $output = $postprocessor->process($output);
     }
     
     return $output;
