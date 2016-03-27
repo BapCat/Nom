@@ -1,8 +1,6 @@
 <?php
 
 use BapCat\Nom\Compiler;
-use BapCat\Nom\TemplateCompilationException;
-use BapCat\Nom\TemplateNotFoundException;
 use BapCat\Persist\Drivers\Local\LocalDriver;
 
 class CompilerTest extends PHPUnit_Framework_TestCase {
@@ -23,37 +21,32 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($expected, $compiled);
   }
   
+  /**
+   * @expectedException BapCat\Nom\TemplateNotFoundException
+   */
   public function testCompileTemplateNotFound() {
-    $this->setExpectedException(TemplateNotFoundException::class);
-    
     $path = $this->fs->getFile('bap.nommm');
     
-    $compiled = $this->compiler->compile($path);
+    $this->compiler->compile($path);
   }
   
+  /**
+   * @requires PHP 7
+   * @expectedException BapCat\Nom\TemplateCompilationException
+   */
   public function testCompileSyntaxError() {
-    // Only run on PHP7
-    if(PHP_VERSION_ID < 70000) {
-      return;
-    }
-    
-    $this->setExpectedException(TemplateCompilationException::class);
-    
     $path = $this->fs->getFile('invalid.php');
     
-    $compiled = $this->compiler->compile($path);
+    $this->compiler->compile($path);
   }
   
+  /**
+   * @requires PHP 7
+   * @expectedException BapCat\Nom\TemplateCompilationException
+   */
   public function testCompileMistake() {
-    // Only run on PHP7
-    if(PHP_VERSION_ID < 70000) {
-      return;
-    }
-    
-    $this->setExpectedException(TemplateCompilationException::class);
-    
     $path = $this->fs->getFile('mistake.php');
     
-    $compiled = $this->compiler->compile($path);
+    $this->compiler->compile($path);
   }
 }
