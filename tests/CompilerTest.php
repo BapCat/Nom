@@ -32,7 +32,7 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
   
   /**
    * @requires PHP 7
-   * @expectedException BapCat\Nom\TemplateCompilationException
+   * @expectedException BapCat\Nom\TemplateCompilationError
    */
   public function testCompileSyntaxError() {
     $path = $this->fs->getFile('invalid.php');
@@ -42,7 +42,7 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
   
   /**
    * @requires PHP 7
-   * @expectedException BapCat\Nom\TemplateCompilationException
+   * @expectedException BapCat\Nom\TemplateCompilationError
    */
   public function testCompileMistake() {
     $path = $this->fs->getFile('mistake.php');

@@ -62,7 +62,7 @@ class Pipeline {
       $processed_code = $template->readAll();
       
       foreach($this->preprocessors as $preprocessor) {
-        $processed_code = $preprocessor->process($processed_code);
+        $processed_code = $preprocessor->transform($processed_code);
       }
       
       $template = $this->cache->child[$template->name];
@@ -72,7 +72,7 @@ class Pipeline {
     $output = $this->compiler->compile($template, $template_vars);
     
     foreach($this->postprocessors as $postprocessor) {
-      $output = $postprocessor->process($output);
+      $output = $postprocessor->transform($output);
     }
     
     return $output;

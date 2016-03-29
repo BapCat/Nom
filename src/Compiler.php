@@ -35,7 +35,7 @@ class Compiler {
       $this->handleViewException($e, $_bap_level);
     } catch(Throwable $e) {
       // Handle PHP7 throwables
-      $this->handleViewException(new TemplateCompilationException($_bap_path, $e), $_bap_level);
+      $this->handleViewException(new TemplateCompilationError($_bap_path, $e), $_bap_level);
     }
     
     return ltrim(ob_get_clean());
@@ -49,7 +49,7 @@ class Compiler {
    *
    * @throws Exception  The same exception that was passed in
    */
-  private function handleViewException(Exception $e, $ob_level) {
+  private function handleViewException($e, $ob_level) {
     while(ob_get_level() > $ob_level) {
       ob_end_clean();
     }
