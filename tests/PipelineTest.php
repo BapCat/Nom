@@ -88,13 +88,13 @@ class PipelineTest extends PHPUnit_Framework_TestCase {
   private function mockTransformer() {
     $mock = $this
       ->getMockBuilder(Transformer::class)
-     ->setMethods(['process'])
+      ->setMethods(['transform'])
       ->getMockForAbstractClass()
     ;
-  
+    
     $mock
       ->expects($this->any())
-      ->method('process')
+      ->method('transform')
       ->will($this->returnCallback(function($code) {
         return str_replace('test', 'tset', $code);
       }))
