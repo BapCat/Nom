@@ -28,5 +28,4 @@ $template = $templates->child['valid.php'];
 $code = $pipeline->compile($template);
 
 $out = $cache->child['concurrency-out'];
-$out->create();
 $out->writeAll($code);

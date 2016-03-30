@@ -2,15 +2,15 @@
 
 class ConcurrencyTest extends PHPUnit_Framework_TestCase {
   public function setUp() {
-    $file = __DIR__ . '/cache/concurrency-test';
-    
-    if(file_exists($file)) {
-      unlink($file);
+    foreach([__DIR__ . '/cache/concurrency-out', __DIR__ . '/cache/valid.php'] as $file) {
+      if(file_exists($file)) {
+        unlink($file);
+      }
     }
   }
   
   public function testConcurrency() {
-    for($i = 0; $i < 20; $i++) {
+    for($i = 0; $i < 2; $i++) {
       exec(__DIR__ . '/spawn > /dev/null &');
     }
   }
