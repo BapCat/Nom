@@ -9,13 +9,13 @@ class NomTransformerTest extends PHPUnit_Framework_TestCase {
     $this->pretransformor = new NomTransformer();
   }
   
-  public function testtransformPhp() {
+  public function testTransformPhp() {
     $input  = '@php echo;';
     $expected = "<<?= '?php' ?> echo;";
     $this->transform($input, $expected);
   }
   
-  public function testtransformInflector() {
+  public function testTransformInflector() {
     $inflectors = [
       'titleize',
       'camelize',
