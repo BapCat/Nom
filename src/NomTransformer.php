@@ -26,10 +26,10 @@ class NomTransformer implements Transformer {
         new Regex('/{!\s*(.+?)\s*!}/'),
         '<?= $1 ?>'
       ], [
-        new Regex('/@if\s*\(\s*(.+?)\s*\)/'),
+        new Regex('/@if\s*\((?<a>(?:[^()]*(?:(?=\()\((?&a)\s*\)|))+)\s*\)/'),
         '<?php if($1): ?>'
       ], [
-        new Regex('/@else\s*\(\s*(.+?)\s*\)/'),
+        new Regex('/@else\s*\((?<a>(?:[^()]*(?:(?=\()\((?&a)\s*\)|))+)\s*\)/'),
         '<?php elseif($1): ?>'
       ], [
         new Regex('/@else/'),
