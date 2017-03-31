@@ -103,8 +103,8 @@ class NomTransformerTest extends PHPUnit_Framework_TestCase {
     return [
       ['@each ( bap as $cat )', '<?php foreach(bap as $cat): ?>'],
       ['@each ( $this->bap($blah )( ) as $cat )', '<?php foreach($this->bap($blah )( ) as $cat): ?>'],
-      ['@each (  bap   as  $cat,it   )', '<?php foreach(bap as $cat => $it): ?>'],
-      ['@each (  $this->bap($blah )( )   as  $cat,it   )', '<?php foreach($this->bap($blah )( ) as $cat => $it): ?>'],
+      ['@each (  bap   as  $cat,$it   )', '<?php foreach(bap as $cat => $it): ?>'],
+      ['@each (  $this->bap($blah )( )   as  $cat,$it   )', '<?php foreach($this->bap($blah )( ) as $cat => $it): ?>'],
     ];
   }
   

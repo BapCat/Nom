@@ -41,7 +41,7 @@ class NomTransformer implements Transformer {
         new Regex('/@each\s*\(\s*(.+?)\s+as\s+\$(\w+?)\s*\)/'),
         '<?php foreach($1 as \$$2): ?>'
       ], [
-        new Regex('/@each\s*\(\s*(.+?)\s+as\s*\$(\w+?)\s*,\s*(\w+?)\s*\)/'),
+        new Regex('/@each\s*\(\s*(.+?)\s+as\s*\$(\w+?)\s*,\s*\$(\w+?)\s*\)/'),
         '<?php foreach($1 as \$$2 => \$$3): ?>'
       ], [
         new Regex('/@endeach/'),
