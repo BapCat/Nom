@@ -1,11 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 use BapCat\Nom\NomTransformer;
+use PHPUnit\Framework\TestCase;
 
-class NomTransformerTest extends PHPUnit_Framework_TestCase {
+class NomTransformerTest extends TestCase {
+  /** @var  NomTransformer  $pretransformer */
   private $pretransformer;
-  
-  private $inflectors = [
+
+  /** @var  string[]  $inflectors */
+  private static $inflectors = [
     'titleize',
     'camelize',
     'underscore',
@@ -15,62 +18,69 @@ class NomTransformerTest extends PHPUnit_Framework_TestCase {
     'ordinal',
     'ordinalize',
   ];
-  
-  public function setUp() {
+
+  public function setUp(): void {
+    parent::setUp();
     $this->pretransformer = new NomTransformer();
   }
-  
-  public function testTransformPhp() {
+
+  public function testTransformPhp(): void {
     $input  = '@php echo;';
     $expected = "<<?= '?php' ?> echo;";
     $this->transform($input, $expected);
   }
-  
-  public function testTransformInflector() {
-    $string = "bap off";
-    
-    foreach($this->inflectors as $inflector) {
+
+  public function testTransformInflector(): void {
+    $string = 'bap off';
+
+    foreach(self::$inflectors as $inflector) {
       $input  = "@{$inflector} ( \"$string\" )";
       $expected = "\ICanBoogie\Inflector::get()->{$inflector}(\"$string\")";
       $this->transform($input, $expected);
     }
   }
-  
-  public function testEscapedEcho() {
+
+  public function testEscapedEcho(): void {
     $input = '{{  $bap  }}';
     $expected = '<?= htmlentities($bap) ?>';
     $this->transform($input, $expected);
   }
-  
-  public function testUnescapedEcho() {
+
+  public function testUnescapedEcho(): void {
     $input = '{!   $bap   !}';
     $expected = '<?= $bap ?>';
     $this->transform($input, $expected);
   }
-  
+
   /**
    * @dataProvider  ifProvider
+   *
+   * @param  string  $input
+   * @param  string  $expected
    */
-  public function testIf($input, $expected) {
+  public function testIf(string $input, string $expected): void {
     $this->transform($input, $expected);
   }
-  
-  public function ifProvider() {
+
+  public function ifProvider(): array {
     return [
       ['@if(blah)', '<?php if(blah): ?>'],
       ['@if   ( blah ) ', '<?php if( blah ): ?> '],
       ['@if($this->blah($this->blahblah())($blah)())', '<?php if($this->blah($this->blahblah())($blah)()): ?>'],
     ];
   }
-  
+
   /**
    * @dataProvider  elseProvider
+   *
+   * @param  string  $input
+   * @param  string  $expected
    */
-  public function testElse($input, $expected) {
+  public function testElse(string $input, string $expected): void {
     $this->transform($input, $expected);
   }
-  
-  public function elseProvider() {
+
+  public function elseProvider(): array {
     return [
       ['@else(blah)', '<?php elseif(blah): ?>'],
       ['@else   ( blah ) ', '<?php elseif( blah ): ?> '],
@@ -78,28 +88,34 @@ class NomTransformerTest extends PHPUnit_Framework_TestCase {
       ['@else', '<?php else: ?>'],
     ];
   }
-  
+
   /**
    * @dataProvider  endIfProvider
+   *
+   * @param  string  $input
+   * @param  string  $expected
    */
-  public function testEndIf($input, $expected) {
+  public function testEndIf(string $input, string $expected): void {
     $this->transform($input, $expected);
   }
-  
-  public function endIfProvider() {
+
+  public function endIfProvider(): array {
     return [
       ['@endif', '<?php endif; ?>'],
     ];
   }
-  
+
   /**
    * @dataProvider  forEachProvider
+   *
+   * @param  string  $input
+   * @param  string  $expected
    */
-  public function testForEach($input, $expected) {
+  public function testForEach(string $input, string $expected): void {
     $this->transform($input, $expected);
   }
-  
-  public function forEachProvider() {
+
+  public function forEachProvider(): array {
     return [
       ['@each ( bap as $cat )', '<?php foreach(bap as $cat): ?>'],
       ['@each ( $this->bap($blah )( ) as $cat )', '<?php foreach($this->bap($blah )( ) as $cat): ?>'],
@@ -107,21 +123,24 @@ class NomTransformerTest extends PHPUnit_Framework_TestCase {
       ['@each (  $this->bap($blah )( )   as  $cat,$it   )', '<?php foreach($this->bap($blah )( ) as $cat => $it): ?>'],
     ];
   }
-  
+
   /**
    * @dataProvider  endForEachProvider
+   *
+   * @param  string  $input
+   * @param  string  $expected
    */
-  public function testEndForEach($input, $expected) {
+  public function testEndForEach(string $input, string $expected): void {
     $this->transform($input, $expected);
   }
-  
-  public function endForEachProvider() {
+
+  public function endForEachProvider(): array {
     return [
       ['@endeach', '<?php endforeach; ?>'],
     ];
   }
-  
-  private function transform($input, $expected) {
+
+  private function transform(string $input, string $expected): void {
     $output = $this->pretransformer->transform($input);
     $this->assertSame($output, $expected);
   }
