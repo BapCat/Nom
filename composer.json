@@ -10,9 +10,9 @@
   ],
   "require" : {
     "php" : ">=7.1",
-    "bapcat/values" : "^2.0",
-    "icanboogie/inflector" : "^1.4",
-    "bapcat/persist" : "^0.3"
+    "bapcat/values" : "^0.2",
+    "bapcat/persist" : "^0.3",
+    "icanboogie/inflector" : "^1.4"
   },
   "require-dev" : {
     "roave/security-advisories": "dev-master",
