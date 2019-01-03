@@ -95,19 +95,17 @@ class PipelineTest extends TestCase {
   /**
    * Mocks out a transformer that reverses the code
    */
-  private function mockTransformer(): MockObject {
+  private function mockTransformer(): Transformer {
     $mock = $this
       ->getMockBuilder(Transformer::class)
       ->setMethods(['transform'])
-      ->getMockForAbstractClass()
-    ;
+      ->getMockForAbstractClass();
 
     $mock
       ->method('transform')
       ->will($this->returnCallback(function($code) {
         return str_replace('test', 'tset', $code);
-      }))
-    ;
+      }));
 
     return $mock;
   }
@@ -115,19 +113,17 @@ class PipelineTest extends TestCase {
   /**
    * Mocks out a transformer that reverses the code
    */
-  private function mockTransformer2(): MockObject {
+  private function mockTransformer2(): Transformer {
     $mock = $this
       ->getMockBuilder(Transformer::class)
       ->setMethods(['transform'])
-      ->getMockForAbstractClass()
-    ;
+      ->getMockForAbstractClass();
 
     $mock
       ->method('transform')
       ->will($this->returnCallback(function($code) {
         return str_replace('tset', 'test', $code);
-      }))
-    ;
+      }));
 
     return $mock;
   }
