@@ -1,4 +1,4 @@
-<?php namespace BapCat\Nom;
+<?php declare(strict_types=1); namespace BapCat\Nom;
 
 use BapCat\Persist\Drivers\Local\LocalFile;
 
@@ -9,48 +9,38 @@ use Throwable;
  * Thrown if there is a problem compiling a template
  */
 class TemplateCompilationError extends Error {
-  /**
-   * The template file
-   *
-   * @var LocalFile
-   */
+  /** @var  LocalFile  $template */
   private $template;
-  
-  /**
-   * The Throwable that was originally thrown
-   *
-   * @var Throwable
-   */
+
+  /** @var  Throwable  $throwable */
   private $throwable;
-  
+
   /**
-   * Constructor
-   *
    * @param  LocalFile  $template   The template that exceptioned
    * @param  Throwable  $throwable  The throwable
    */
   public function __construct(LocalFile $template, Throwable $throwable) {
     $this->template  = $template;
     $this->throwable = $throwable;
-    
+
     parent::__construct("A problem occurred while compiling [{$template->path}]:\n$throwable");
   }
-  
+
   /**
    * Accessor for the template file
    *
    * @return  LocalFile  The template
    */
-  public function getTemplate() {
+  public function getTemplate(): LocalFile {
     return $this->template;
   }
-  
+
   /**
    * Accessor for the throwable
    *
    * @return  Throwable  The throwable
    */
-  public function getThrowable() {
+  public function getThrowable(): Throwable {
     return $this->throwable;
   }
 }
