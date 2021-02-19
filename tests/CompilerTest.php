@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
 use BapCat\Nom\Compiler;
+use BapCat\Nom\TemplateCompilationError;
+use BapCat\Nom\TemplateNotFoundException;
 use BapCat\Persist\Drivers\Local\LocalDriver;
 use PHPUnit\Framework\TestCase;
 
@@ -26,30 +28,24 @@ class CompilerTest extends TestCase {
     $this->assertEquals($expected, $compiled);
   }
 
-  /**
-   * @expectedException BapCat\Nom\TemplateNotFoundException
-   */
   public function testCompileTemplateNotFound(): void {
     $path = $this->fs->getFile('bap.nommm');
 
+    $this->expectException(TemplateNotFoundException::class);
     $this->compiler->compile($path);
   }
 
-  /**
-   * @expectedException BapCat\Nom\TemplateCompilationError
-   */
   public function testCompileSyntaxError(): void {
     $path = $this->fs->getFile('invalid.php');
 
+    $this->expectException(TemplateCompilationError::class);
     $this->compiler->compile($path);
   }
 
-  /**
-   * @expectedException BapCat\Nom\TemplateCompilationError
-   */
   public function testCompileMistake(): void {
     $path = $this->fs->getFile('mistake.php');
 
+    $this->expectException(TemplateCompilationError::class);
     $this->compiler->compile($path);
   }
 }

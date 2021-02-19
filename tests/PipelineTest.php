@@ -5,7 +5,6 @@ use BapCat\Nom\Compiler;
 use BapCat\Nom\Transformer;
 use BapCat\Persist\Drivers\Local\LocalDirectory;
 use BapCat\Persist\Drivers\Local\LocalDriver;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PipelineTest extends TestCase {
@@ -98,7 +97,7 @@ class PipelineTest extends TestCase {
   private function mockTransformer(): Transformer {
     $mock = $this
       ->getMockBuilder(Transformer::class)
-      ->setMethods(['transform'])
+      ->onlyMethods(['transform'])
       ->getMockForAbstractClass();
 
     $mock
@@ -116,7 +115,7 @@ class PipelineTest extends TestCase {
   private function mockTransformer2(): Transformer {
     $mock = $this
       ->getMockBuilder(Transformer::class)
-      ->setMethods(['transform'])
+      ->onlyMethods(['transform'])
       ->getMockForAbstractClass();
 
     $mock

@@ -2,21 +2,29 @@
   "name" : "bapcat/nom",
   "description" : "A templating language fit for cats",
   "license" : "GPL-3.0-or-later",
-  "homepage" : "http://github.com/BapCat/Nom",
+  "homepage" : "https://github.com/BapCat/Nom",
   "authors" : [{
       "name" : "Corey Frenette",
       "email" : "corey@narwhunderful.com"
     }
   ],
+  "config": {
+    "preferred-install": "dist",
+    "platform": {
+      "php": "7.4"
+    },
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
   "require" : {
-    "php" : ">=7.1",
-    "bapcat/values" : "^0.2",
-    "bapcat/persist" : "^0.3",
-    "icanboogie/inflector" : "^1.4"
+    "php" : "^7.4|^8.0",
+    "bapcat/values" : "^1.0",
+    "bapcat/persist" : "^0.4",
+    "icanboogie/inflector" : "^2.0"
   },
   "require-dev" : {
     "roave/security-advisories": "dev-master",
-    "phpunit/phpunit" : "^7.5"
+    "phpunit/phpunit" : "^9.5"
   },
   "autoload" : {
     "psr-4" : {

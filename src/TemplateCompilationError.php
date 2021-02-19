@@ -12,18 +12,14 @@ class TemplateCompilationError extends Error {
   /** @var  LocalFile  $template */
   private $template;
 
-  /** @var  Throwable  $throwable */
-  private $throwable;
-
   /**
    * @param  LocalFile  $template   The template that exceptioned
    * @param  Throwable  $throwable  The throwable
    */
   public function __construct(LocalFile $template, Throwable $throwable) {
     $this->template  = $template;
-    $this->throwable = $throwable;
 
-    parent::__construct("A problem occurred while compiling [{$template->path}]:\n$throwable");
+    parent::__construct("A problem occurred while compiling [{$template->path}]:\n$throwable", $throwable->getCode(), $throwable);
   }
 
   /**
@@ -33,14 +29,5 @@ class TemplateCompilationError extends Error {
    */
   public function getTemplate(): LocalFile {
     return $this->template;
-  }
-
-  /**
-   * Accessor for the throwable
-   *
-   * @return  Throwable  The throwable
-   */
-  public function getThrowable(): Throwable {
-    return $this->throwable;
   }
 }
